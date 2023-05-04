@@ -1,0 +1,199 @@
+﻿<UserControl
+    x:Class="XClipboard.Views.Settings.SystemView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:XClipboard.ViewModels.Settings"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="微软雅黑"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="TextBlockTextBoxTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    Text="{Binding Label, Mode=TwoWay}" />
+                <TextBox VerticalAlignment="Center" Text="{Binding Value, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TextBlockComboBoxTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    Text="{Binding Label, Mode=TwoWay}" />
+                <ComboBox
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding ComboBoxItems, Mode=TwoWay}"
+                    SelectedItem="{Binding Value, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TextBlockCheckBoxTemplate">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox
+                    VerticalAlignment="Center"
+                    Content="{Binding Label, Mode=TwoWay}"
+                    IsChecked="{Binding Value, Mode=TwoWay}" />
+            </StackPanel>
+        </DataTemplate>
+        <local:ViewVisibilityConverter x:Key="ViewVisibilityConverter" />
+    </UserControl.Resources>
+
+    <StackPanel Margin="5">
+        <ListBox
+            x:Name="MySystemView"
+            materialDesign:ListBoxItemAssist.ShowSelection="False"
+            Visibility="{Binding ShowView, Converter={StaticResource ViewVisibilityConverter}, ConverterParameter=SystemView}">
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        VerticalAlignment="Center"
+                        Content="开机自启"
+                        IsChecked="{Binding BindAppState.SystemSettings.Startup}" />
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        VerticalAlignment="Center"
+                        Content="自动上传截图 (如果默认图库有效)"
+                        IsChecked="{Binding BindAppState.SystemSettings.Upload_Auto}" />
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        VerticalAlignment="Center"
+                        Content="提示用户上传"
+                        IsChecked="{Binding BindAppState.SystemSettings.Upload_Alert}" />
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center"
+                        Text="首页最新记录展示个数：" />
+                    <ComboBox
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding Show_NumberItems}"
+                        SelectedItem="{Binding BindAppState.SystemSettings.Show_Number}" />
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
+        <ListBox
+            x:Name="MyClipboardView"
+            materialDesign:ListBoxItemAssist.ShowSelection="False"
+            Visibility="{Binding ShowView, Converter={StaticResource ViewVisibilityConverter}, ConverterParameter=ClipboardView}">
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        VerticalAlignment="Center"
+                        Content="去重记录剪贴板数据"
+                        IsChecked="{Binding BindAppState.ClipboardSettings.duplicate_data}" />
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center"
+                        Text="图片保存位置：" />
+                    <TextBox VerticalAlignment="Center" Text="{Binding BindAppState.ClipboardSettings.image_save_path}" />
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
+        <ListBox
+            x:Name="MyImageurlView"
+            materialDesign:ListBoxItemAssist.ShowSelection="False"
+            Visibility="{Binding ShowView, Converter={StaticResource ViewVisibilityConverter}, ConverterParameter=ImageurlView}">
+            <ListBoxItem Margin="4,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center"
+                        Text="默认图库：" />
+                    <ComboBox
+                        x:Name="DefaultOSS"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding DefaultOSSItems}"
+                        SelectedItem="{Binding BindAppState.ImageurlSettings.DefaultOSS}" />
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Margin="0,-10,0,0">
+                    <ListBox materialDesign:ListBoxItemAssist.ShowSelection="False" Visibility="{Binding BindAppState.ImageurlSettings.DefaultOSS, Converter={StaticResource ViewVisibilityConverter}, ConverterParameter=又拍云}">
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    Text="管理员账号：" />
+                                <TextBox VerticalAlignment="Center" Text="{Binding BindAppState.ImageurlSettings.UpyunSettings.User}" />
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    Text="管理员密码：" />
+                                <PasswordBox
+                                    Margin="0,-15,0,0"
+                                    VerticalAlignment="Center"
+                                    materialDesign:PasswordBoxAssist.Password="{Binding BindAppState.ImageurlSettings.UpyunSettings.Password, Mode=TwoWay}"
+                                    materialDesign:TextFieldAssist.HasClearButton="False"
+                                    Style="{StaticResource MaterialDesignFloatingHintRevealPasswordBox}" />
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    Text="存储空间名（服务名称）：" />
+                                <TextBox VerticalAlignment="Center" Text="{Binding BindAppState.ImageurlSettings.UpyunSettings.Bucket}" />
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    Text="外链域名：" />
+                                <TextBox VerticalAlignment="Center" Text="{Binding BindAppState.ImageurlSettings.UpyunSettings.Host}" />
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
+                                    Text="保存路径（用 '/' 分割路径）：" />
+                                <TextBox VerticalAlignment="Center" Text="{Binding BindAppState.ImageurlSettings.UpyunSettings.UpPath}" />
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
+                    <ListBox materialDesign:ListBoxItemAssist.ShowSelection="False" Visibility="{Binding BindAppState.ImageurlSettings.DefaultOSS, Converter={StaticResource ViewVisibilityConverter}, ConverterParameter=七牛云}">
+                        <ListBoxItem>七牛云设置1</ListBoxItem>
+                        <ListBoxItem>七牛云设置2</ListBoxItem>
+                        <ListBoxItem>七牛云设置3</ListBoxItem>
+                        <ListBoxItem>七牛云设置4</ListBoxItem>
+                    </ListBox>
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
+    </StackPanel>
+</UserControl>

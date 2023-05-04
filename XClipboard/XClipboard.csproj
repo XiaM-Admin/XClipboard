@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="SharpClipboard" Version="3.5.2" />
+    <PackageReference Include="SKIT.FlurlHttpClient.Upyun.Uss" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HandData\DataHandler.csproj" />
+    <ProjectReference Include="..\XClipboard.Core\XClipboard.Core.csproj" />
+    <ProjectReference Include="..\Modules\XClipboard.Modules.ModuleName\XClipboard.Modules.ModuleName.csproj" />
+    <ProjectReference Include="..\Services\XClipboard.Services.Interfaces\XClipboard.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\Services\XClipboard.Services\XClipboard.Services.csproj" />
+  </ItemGroup>
+</Project>

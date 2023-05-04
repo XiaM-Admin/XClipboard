@@ -1,0 +1,78 @@
+﻿<Window
+    x:Class="XClipboard.Views.NotificationWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:XClipboard.ViewModels.Settings"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    MinWidth="370"
+    MinHeight="131"
+    MaxWidth="400"
+    MaxHeight="140"
+    d:DesignHeight="140.534"
+    d:DesignWidth="370.953"
+    FontFamily="微软雅黑"
+    FontSize="18"
+    Loaded="Window_Loaded"
+    Style="{StaticResource MaterialDesignWindow}"
+    Visibility="{Binding ShowView, Converter={StaticResource ViewVisibilityConverter}, ConverterParameter=ShowView}"
+    mc:Ignorable="d">
+    <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect Kind=FadeIn}">
+        <Grid
+            MouseEnter="Grid_MouseEnter"
+            MouseLeave="Grid_MouseLeave"
+            MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <!--  头部  -->
+            <DockPanel>
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Width="45"
+                        Height="45"
+                        Kind="InformationSlabSymbol" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="Black"
+                        Text="{Binding Title}" />
+                </StackPanel>
+                <Button
+                    Width="45"
+                    Margin="2"
+                    HorizontalAlignment="Right"
+                    Click="CloseButton_Click">
+                    <materialDesign:PackIcon Kind="Close" />
+                </Button>
+            </DockPanel>
+            <!--  主体  -->
+            <TextBlock
+                Grid.Row="1"
+                MaxWidth="370"
+                Margin="14,8,0,0"
+                Text="{Binding Content}"
+                TextWrapping="Wrap" />
+            <!--  尾部  -->
+            <DockPanel Grid.Row="2" LastChildFill="False">
+                <Button
+                    Margin="5,3,3,3"
+                    Command="{Binding Button_Ok}"
+                    Content="确定"
+                    DockPanel.Dock="Right" />
+                <Button
+                    Margin="3"
+                    Command="{Binding Button_Cancal}"
+                    Content="取消"
+                    DockPanel.Dock="Right" />
+            </DockPanel>
+
+        </Grid>
+    </materialDesign:TransitioningContent>
+</Window>

@@ -1,0 +1,126 @@
+﻿<Page
+    x:Class="XClipboard.Views.Dialogs.ImageShowView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    MaxWidth="800"
+    MaxHeight="800"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="微软雅黑"
+    TextElement.FontSize="16"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
+    mc:Ignorable="d">
+    <Grid Height="auto" MinWidth="500">
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="500" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <materialDesign:Card Panel.ZIndex="-1" materialDesign:ElevationAssist.Elevation="Dp2">
+            <Image
+                Width="auto"
+                Height="auto"
+                Source="{Binding ShowImage}" />
+        </materialDesign:Card>
+
+        <Grid Grid.Row="1">
+            <StackPanel
+                Margin="10,10,0,0"
+                HorizontalAlignment="Left"
+                Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="14" Text="图片名：" />
+                    <TextBlock FontWeight="Bold" Text="{Binding ImageItem.Name}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="14" Text="图片大小：" />
+                    <TextBlock FontWeight="Bold" Text="{Binding ImageItem.Size}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="备注：" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="{Binding ImageItem.Notes, Mode=TwoWay}" />
+                    <Button
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Command="{Binding EditNotes}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniButton">
+                        <materialDesign:PackIcon Kind="PencilOutline" />
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="14"
+                        Text="分类：" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="{Binding ImageItem.ClassName, Mode=TwoWay}" />
+                    <Button
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Command="{Binding EditClassName}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniButton">
+                        <materialDesign:PackIcon Kind="PencilOutline" />
+                    </Button>
+                </StackPanel>
+                <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="转换链接：" />
+                    <TextBox
+                        x:Name="TextBox_CopyUrl"
+                        VerticalAlignment="Center"
+                        Text="{Binding CopyUrl}" />
+                    <Button
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Command="{Binding Copy}"
+                        Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                        ToolTip="MaterialDesignFloatingActionMiniButton">
+                        <materialDesign:PackIcon Kind="ContentCopy" />
+                    </Button>
+                </StackPanel>
+                <StackPanel Margin="0,10,0,10" Orientation="Horizontal">
+                    <Button
+                        Margin="5"
+                        Command="{Binding ChangeUrl}"
+                        CommandParameter="URL"
+                        Content="URL" />
+                    <Button
+                        Margin="5"
+                        Command="{Binding ChangeUrl}"
+                        CommandParameter="HTML"
+                        Content="HTML" />
+                    <Button
+                        Margin="5"
+                        Command="{Binding ChangeUrl}"
+                        CommandParameter="MarkDown"
+                        Content="MarkDown" />
+                    <Button
+                        Margin="5"
+                        Command="{Binding ChangeUrl}"
+                        CommandParameter="BBCode"
+                        Content="BBCode" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <materialDesign:Snackbar
+            x:Name="SnackbarOne"
+            Grid.Row="1"
+            IsActive="{Binding ShowTip}"
+            Message="链接已复制到剪贴板！" />
+    </Grid>
+</Page>
