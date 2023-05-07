@@ -1,4 +1,5 @@
-﻿using Prism.Services.Dialogs;
+﻿using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,7 @@ namespace XClipboard.Common
         public bool JumpSave { get; set; } = true;
 
         public IDialogService dialogService { get; set; }
+        public IRegionManager regionManager { get; set; }
 
         public AppState()
         {

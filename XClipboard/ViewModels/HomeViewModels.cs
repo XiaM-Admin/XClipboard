@@ -2,10 +2,8 @@
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using XClipboard.Common;
 using XClipboard.Common.Models;
-using XClipboard.Views;
 
 namespace XClipboard.ViewModels
 {
@@ -40,12 +38,12 @@ namespace XClipboard.ViewModels
             Clipboards = new ObservableCollection<ClipboardbLists>();
             BindingClipboards();
 
-            Test = new DelegateCommand(test);
             OpenInfoDialog = new DelegateCommand(Open);
             MouseDoubleClick = new DelegateCommand<object>(mouseDoubleClick);
 
             DialogService = dialogService;
         }
+
         public ObservableCollection<ClipboardbLists> Clipboards
         {
             get { return clipboards; }
@@ -76,8 +74,6 @@ namespace XClipboard.ViewModels
             set { programStates = value; RaisePropertyChanged(); }
         }
 
-        public DelegateCommand Test { get; private set; }
-
         private void BindingClipboards()
         {
             var appState = (AppState)System.Windows.Application.Current.Properties["AppState"];
@@ -101,15 +97,11 @@ namespace XClipboard.ViewModels
                 };
             DialogService.ShowDialog("TextShowView", keyValues, t => { });
         }
+
         private void Open()
         {
             //弹出Dialog窗口
             DialogService.ShowDialog("ProgramInfoView");
-        }
-
-        private void test()
-        {
-
         }
     }
 }

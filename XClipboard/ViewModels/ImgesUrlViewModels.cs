@@ -132,12 +132,9 @@ namespace XClipboard.ViewModels
         /// <param name="navigationContext"></param>
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            if (navigationContext.Parameters.ContainsKey("UpdataView"))
-            {
-                string isUpdata = navigationContext.Parameters.GetValue<string>("UpdataView");
-                if (isUpdata == "true")
-                    UpdataView();
-            }
+            //if (navigationContext.Parameters.ContainsKey("UpdataView"))
+            //{ }
+            UpdataView();
         }
 
         /// <summary>

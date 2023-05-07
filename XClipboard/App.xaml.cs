@@ -3,16 +3,16 @@ using Prism.Ioc;
 using Prism.Modularity;
 using System.Windows;
 using XClipboard.ClipboardHistory;
-using XClipboard.Common.Models;
 using XClipboard.Common;
+using XClipboard.Common.Models;
 using XClipboard.Core;
 using XClipboard.Modules.ModuleName;
 using XClipboard.Services;
 using XClipboard.Services.Interfaces;
-using XClipboard.Views;
+using XClipboard.ViewModels;
 using XClipboard.ViewModels.Dialogs;
 using XClipboard.ViewModels.Settings;
-using XClipboard.ViewModels;
+using XClipboard.Views;
 using XClipboard.Views.Dialogs;
 using XClipboard.Views.Settings;
 
@@ -28,14 +28,12 @@ namespace XClipboard
             return Container.Resolve<MainWindow>();
         }
 
-
         /// <summary>
         /// 重构启动代码
         /// </summary>
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-
             log4net.Config.XmlConfigurator.Configure();
             ILog log = LogManager.GetLogger("App");//获取一个日志记录器
 
@@ -89,7 +87,5 @@ namespace XClipboard
         {
             moduleCatalog.AddModule<ModuleNameModule>();
         }
-
-
     }
 }

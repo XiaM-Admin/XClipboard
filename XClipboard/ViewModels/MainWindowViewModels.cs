@@ -26,6 +26,7 @@ namespace XClipboard.ViewModels
             OpenCommand = new DelegateCommand<MenuItem>(Open);
             RegionManager = regionManager;
             var appState = (AppState)System.Windows.Application.Current.Properties["AppState"];
+            appState.regionManager = regionManager;
             appState.dialogService = dialogService;
             CreateMenus();
         }
