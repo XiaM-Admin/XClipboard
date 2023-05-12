@@ -6,3 +6,13 @@
 
 ## 项目结构
 采用WPF MVVM框架构建，使用Prism、MaterialDesignInXamlToolkit等开源库实现各种功能。
+
+![](https://p.x-tools.top/Images/2023 05-12 22-24-19.png)
+
+![2023 05-07 20-55-18.png](https://p.x-tools.top/Images/2023%2005-07%2020-55-18.png)
+
+![](https://p.x-tools.top/Images/2023 05-12 22-29-44.png)
+
+## 建议
+
+- 我不建议使用Win10 & 11 的系统截图工具，因为这会导致本程序连续保存多次该截图，建议使用免费的Snipaste或者picpick来作为截图工具使用！

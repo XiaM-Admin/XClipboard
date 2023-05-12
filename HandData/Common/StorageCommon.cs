@@ -20,7 +20,7 @@ namespace DataHandler.Common
         /// <returns></returns>
         public static byte[] GetImageBytes(string filePath)
         {
-            if (!File.Exists(System.AppDomain.CurrentDomain.BaseDirectory + filePath))
+            if (!File.Exists(filePath))
                 return Array.Empty<byte>();
 
             FileStream fs = new(filePath, FileMode.Open, FileAccess.Read);
