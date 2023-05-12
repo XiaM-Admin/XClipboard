@@ -13,13 +13,11 @@ namespace XClipboard.ViewModels.Dialogs
 {
     internal class ImageShowViewModels : BindableBase, IDialogAware
     {
-        private readonly DBService dbobj = (DBService)System.Windows.Application.Current.Properties["DBObj"];
+        private readonly DBService dbobj = Program_State.GetDBService();
         private string copyUrl;
         private ShowImageItem imageItem;
         private BitmapImage showImage;
         private bool showTip;
-        private bool IsChanged { get; set; } = false;
-
         public ImageShowViewModels(IDialogService dialogService)
         {
             ChangeUrl = new DelegateCommand<string>(changurl);
@@ -51,7 +49,6 @@ namespace XClipboard.ViewModels.Dialogs
         }
 
         public IDialogService DialogService { get; }
-
         /// <summary>
         /// 编辑类名
         /// </summary>
@@ -90,7 +87,7 @@ namespace XClipboard.ViewModels.Dialogs
         }
 
         public string Title => "图床 - 图片详情";
-
+        private bool IsChanged { get; set; } = false;
         public bool CanCloseDialog()
         {
             return true;

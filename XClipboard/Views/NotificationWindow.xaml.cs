@@ -1,5 +1,4 @@
-﻿using Prism.Services.Dialogs;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -17,11 +16,39 @@ namespace XClipboard.Views
             InitializeComponent();
             N.CloseWindow = CloseWindow;
             DataContext = N;
+
+            titlt = N.Title;
+
+            // 创建一个计数器变量，用于跟踪已经过去的时间
+            int counter = N.ShowTime;
+            // 创建一个定时器对象
+            var timer = new System.Windows.Forms.Timer();
+            // 设置定时器的间隔为1秒
+            timer.Interval = 1000;
+            // 在定时器的Tick事件中更新窗口的UI元素，并关闭窗口
+            timer.Tick += (sender, args) =>
+            {
+                counter--;
+                if (counter == 0)
+                {
+                    timer.Stop();
+                    Close();
+                }
+                else
+                    // 更新窗口的UI元素，以显示剩余的秒数
+                    N.Title = titlt + $" ({counter} S)";
+            };
+            // 启动定时器
+            if (N.ShowTime > 0)
+            {
+                N.Title = titlt + $" ({counter} S)";
+                timer.Start();
+            }
         }
+
         private void CloseWindow()
         {
-            Window window = Window.GetWindow(this);
-            window.Close();
+            Close();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -47,6 +74,17 @@ namespace XClipboard.Views
             double y = workArea.Bottom - ActualHeight - 10;
             Left = x;
             Top = y;
+
+            //Storyboard sb = new Storyboard();
+            //DoubleAnimation da = new DoubleAnimation()
+            //{
+            //    From = 0,
+            //    To = 1,
+            //    Duration = new Duration(TimeSpan.FromSeconds(1))
+            //};
+            //Storyboard.SetTargetProperty(da, new PropertyPath("Opacity"));
+            //sb.Children.Add(da);
+            //sb.Begin(this);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -60,26 +98,12 @@ namespace XClipboard.Views
             DragMove();
         }
 
-        private void Grid_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            // 鼠标进入窗口时，设置窗口不透明
-            SetLayeredWindowAttributes(new WindowInteropHelper(this).Handle, 0, (byte)OpacityType.Opaque, LWA_ALPHA);
-        }
-
-        private void Grid_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            // 鼠标离开窗口时，设置窗口透明
-            SetLayeredWindowAttributes(new WindowInteropHelper(this).Handle, 0, (byte)OpacityType.Transparent, LWA_ALPHA);
-        }
-
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hwnd, int index, uint newStyle);
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter, int x, int y, int cx, int cy, uint flags);
 
-        [DllImport("user32.dll")]
-        private static extern int GetWindowLong(IntPtr hwnd, int index);
 
         [DllImport("user32.dll")]
         private static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
@@ -93,14 +117,20 @@ namespace XClipboard.Views
         private const uint WS_EX_TRANSPARENT = 0x00000020;
         private const uint WS_EX_NOACTIVATE = 0x08000000;
         private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        private string titlt;
         private const uint SWP_NOMOVE = 0x0002;
         private const uint SWP_NOSIZE = 0x0001;
         private const uint SWP_NOACTIVATE = 0x0010;
         private const uint LWA_ALPHA = 0x00000002;
+
         private enum OpacityType
         {
             Transparent = 0,
             Opaque = 255
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
         }
     }
 }

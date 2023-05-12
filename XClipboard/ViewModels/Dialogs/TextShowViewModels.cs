@@ -18,7 +18,7 @@ namespace XClipboard.ViewModels.Dialogs
         /// <summary>
         /// 只读数据库对象
         /// </summary>
-        private readonly DBService dbobj = (DBService)System.Windows.Application.Current.Properties["DBObj"];
+        private readonly DBService dbobj = Program_State.GetDBService();
 
         /// <summary>
         /// 显示剪贴板总数据
@@ -246,7 +246,7 @@ namespace XClipboard.ViewModels.Dialogs
         /// </summary>
         private async void upPicToNet()
         {
-            var appState = (AppState)System.Windows.Application.Current.Properties["AppState"];
+            var appState = Program_State.GetAppState();
             ShowDelayTip = "Sleep";
             UpLoadResponse response = await Auto_UpImage.UpImageAsync(appState.userSettings.JsonSettings.ImageurlSettings.DefaultOSS, ClipboardItem.content);
             ShowDelayTip = "";

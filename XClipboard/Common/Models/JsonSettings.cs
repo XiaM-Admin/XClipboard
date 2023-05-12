@@ -16,6 +16,32 @@ namespace XClipboard.Common.Models
         /// 系统图片保存位置
         /// </summary>
         public string image_save_path { get; set; }
+
+        /// <summary>
+        /// 需要监控的数据
+        /// </summary>
+        public Clipboard_HandleData handleData { get; set; }
+    }
+
+    /// <summary>
+    /// 剪贴板监控数据
+    /// </summary>
+    public class Clipboard_HandleData
+    {
+        /// <summary>
+        /// 是否监听图片
+        /// </summary>
+        public bool Image { get; set; }
+
+        /// <summary>
+        /// 是否监听文本
+        /// </summary>
+        public bool Text { get; set; }
+
+        /// <summary>
+        /// 是否监听文件路径
+        /// </summary>
+        public bool Files { get; set; }
     }
 
     /// <summary>
@@ -23,6 +49,7 @@ namespace XClipboard.Common.Models
     /// </summary>
     public class ImageurlSettings
     {
+        public string CopyUrlMode { get; set; }
         /// <summary>
         /// 默认&选中云存储方式
         /// </summary>
@@ -62,6 +89,10 @@ namespace XClipboard.Common.Models
                 JsonSettings jsonSettings = obj as JsonSettings;
                 if (jsonSettings.ClipboardSettings.duplicate_data == ClipboardSettings.duplicate_data &&
                     jsonSettings.ClipboardSettings.image_save_path == ClipboardSettings.image_save_path &&
+                    jsonSettings.ClipboardSettings.handleData.Text == ClipboardSettings.handleData.Text &&
+                    jsonSettings.ClipboardSettings.handleData.Image == ClipboardSettings.handleData.Image &&
+                    jsonSettings.ClipboardSettings.handleData.Files == ClipboardSettings.handleData.Files &&
+                    jsonSettings.ImageurlSettings.CopyUrlMode == ImageurlSettings.CopyUrlMode &&
                     jsonSettings.ImageurlSettings.DefaultOSS == ImageurlSettings.DefaultOSS &&
                     jsonSettings.ImageurlSettings.UpyunSettings.Bucket == ImageurlSettings.UpyunSettings.Bucket &&
                     jsonSettings.ImageurlSettings.UpyunSettings.Host == ImageurlSettings.UpyunSettings.Host &&
@@ -71,7 +102,8 @@ namespace XClipboard.Common.Models
                     jsonSettings.SystemSettings.Show_Number == SystemSettings.Show_Number &&
                     jsonSettings.SystemSettings.Startup == SystemSettings.Startup &&
                     jsonSettings.SystemSettings.Upload_Alert == SystemSettings.Upload_Alert &&
-                    jsonSettings.SystemSettings.Upload_Auto == SystemSettings.Upload_Auto)
+                    jsonSettings.SystemSettings.Upload_Auto == SystemSettings.Upload_Auto &&
+                    jsonSettings.SystemSettings.IsListen == SystemSettings.IsListen)
                     return true;
             }
             return base.Equals(obj);
@@ -105,6 +137,11 @@ public class JsonSteeingsModels
 /// </summary>
 public class SystemSettings
 {
+    /// <summary>
+    /// 是否开启剪贴板服务
+    /// </summary>
+    public bool IsListen { get; set; }
+
     /// <summary>
     /// 首页展示数据个数
     /// </summary>

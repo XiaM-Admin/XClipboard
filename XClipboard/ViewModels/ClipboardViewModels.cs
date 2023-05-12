@@ -33,7 +33,7 @@ namespace XClipboard.ViewModels
             else if (base.contentType is "Image")
             {
                 //获取数据库图片对象返回
-                var dbobj = (DBService)System.Windows.Application.Current.Properties["DBObj"];
+                var dbobj = Program_State.GetDBService();
                 string name = Path.GetFileName(base.content);
                 return await dbobj.GetDtaByParam<Imageurldb_Models>("Name", name, DBService_Core.ImgaeurlName);
             }
@@ -43,7 +43,7 @@ namespace XClipboard.ViewModels
 
     public class ClipboardViewModels : BindableBase, INavigationAware
     {
-        private readonly DBService dbobj = (DBService)System.Windows.Application.Current.Properties["DBObj"];
+        private readonly DBService dbobj = Program_State.GetDBService();
         private readonly IDialogService dialogService;
 
         private ObservableCollection<ClipboardItems> clipboards;

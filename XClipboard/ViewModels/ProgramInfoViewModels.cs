@@ -22,7 +22,7 @@ namespace XClipboard.ViewModels
                 if (appState.IsClipboardServiceRunning.Clipboard)
                     Clipborad = "True";
                 else
-                    Clipborad = "False";
+                    Clipborad = "False 设置中可能处于关闭状态";
 
                 if (appState.IsClipboardServiceRunning.LocalStorage)
                     LocalStorage = "True";

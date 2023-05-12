@@ -16,17 +16,16 @@ namespace XClipboard.ViewModels
         /// <summary>
         /// 弹出弹窗提示
         /// </summary>
-        /// <param name="title">标题</param>
-        /// <param name="content">主题内容</param>
-        /// <param name="button_Ok">确定事件</param>
-        /// <param name="button_Cancal">取消事件</param>
-        public NotificationWindowModels(string title, string content, Action button_Ok = null, Action button_Cancal = null, Action closeWindow = null)
+        /// <param name="sets">NotificationSets 设置参数类</param>
+        /// <param name="closeWindow"></param>
+        public NotificationWindowModels(NotificationSets sets, Action closeWindow = null)
         {
-            Title = title;
-            Content = content;
+            Title = sets.Title;
+            Content = sets.Content;
+            Button_Ok1 = sets.Button_Ok;
+            Button_Cancal1 = sets.Button_Cancal;
+            ShowTime = sets?.ShowTime > 0 ? sets.ShowTime : 0;
 
-            Button_Ok1 = button_Ok;
-            Button_Cancal1 = button_Cancal;
             CloseWindow = closeWindow;
             Button_Ok = new DelegateCommand(button_Ok_P);
             Button_Cancal = new DelegateCommand(button_Cancal_P);
@@ -75,6 +74,31 @@ namespace XClipboard.ViewModels
 
         public Action Button_Ok1 { get; }
         public Action Button_Cancal1 { get; }
+        public int ShowTime { get; }
         public Action CloseWindow { get; set; }
+    }
+
+    public class NotificationSets
+    {
+        /// <summary>
+        /// 显示标题
+        /// </summary>
+        public string Title { get; set; }
+        /// <summary>
+        /// 显示内容
+        /// </summary>
+        public string Content { get; set; }
+        /// <summary>
+        /// OK 后操作
+        /// </summary>
+        public Action Button_Ok { get; set; } = null;
+        /// <summary>
+        /// 取消 后操作
+        /// </summary>
+        public Action Button_Cancal { get; set; } = null;
+        /// <summary>
+        /// 显示保持时间
+        /// </summary>
+        public int ShowTime { get; set; }
     }
 }

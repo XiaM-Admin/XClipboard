@@ -14,6 +14,7 @@
     MaxHeight="140"
     d:DesignHeight="140.534"
     d:DesignWidth="370.953"
+    Closing="Window_Closing"
     FontFamily="微软雅黑"
     FontSize="18"
     Loaded="Window_Loaded"
@@ -21,11 +22,7 @@
     Visibility="{Binding ShowView, Converter={StaticResource ViewVisibilityConverter}, ConverterParameter=ShowView}"
     mc:Ignorable="d">
     <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect Kind=FadeIn}">
-        <Grid
-            MouseEnter="Grid_MouseEnter"
-            MouseLeave="Grid_MouseLeave"
-            MouseLeftButtonDown="Grid_MouseLeftButtonDown">
-
+        <Grid MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />

@@ -15,7 +15,7 @@ namespace XClipboard.Common
     {
         public static async Task<UpLoadResponse> UpImageAsync(string OSS_Name, string filePath)
         {
-            var appset = ((AppState)System.Windows.Application.Current.Properties["AppState"]).userSettings.JsonSettings.ImageurlSettings;
+            var appset = Program_State.GetJsonSettings().ImageurlSettings;
 
             UpLoadResponse ret = new();
             switch (OSS_Name)
@@ -83,9 +83,8 @@ namespace XClipboard.Common
         {
             Bitmap bitmap = new(image.Width, image.Height, PixelFormat.Format32bppArgb);
             using (Graphics graphics = Graphics.FromImage(bitmap))
-            {
                 graphics.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
-            }
+
             return bitmap;
         }
     }

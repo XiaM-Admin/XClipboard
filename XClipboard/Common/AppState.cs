@@ -20,6 +20,7 @@ namespace XClipboard.Common
 
         public UserSettings userSettings { get; set; }
 
+        public bool IsAutoStart { get; set; } = false;
         public bool JumpSave { get; set; } = true;
 
         public IDialogService dialogService { get; set; }
@@ -98,7 +99,7 @@ namespace XClipboard.Common
 
         public async void UpdataClipboards()
         {
-            var dbobj = (DBService)System.Windows.Application.Current.Properties["DBObj"];
+            var dbobj = Program_State.GetDBService();
             List<Clipboardb_Models> clipboardbs = await dbobj.GetData<Clipboardb_Models>(5);
             if (clipboardbs.Count > 0)
             {
@@ -132,7 +133,7 @@ namespace XClipboard.Common
 
         private void UpdataListNumber()
         {
-            var dbobj = (DBService)System.Windows.Application.Current.Properties["DBObj"];
+            var dbobj = Program_State.GetDBService();
 
             ClipboardListNumber.Clear();
             ClipboardListNumber.Add(new ListsModels() { icon = "AlignHorizontalLeft", text = "数据库数：", number = dbobj.GetDataNumber().Result });
@@ -140,5 +141,29 @@ namespace XClipboard.Common
             ClipboardListNumber.Add(new ListsModels() { icon = "LinkVariant", text = "图库外链数：", number = dbobj.GetDataNumber(DBService_Core.ImgaeurlName).Result });
             ClipboardListNumber.Add(new ListsModels() { icon = "ArrowLeft", text = "昨天共记录：", number = dbobj.GetNumberByCreateTime(DateTime.Now).Result });
         }
+    }
+
+    /// <summary>
+    /// 静态便捷方法
+    /// </summary>
+    public static class Program_State
+    {
+        /// <summary>
+        /// 获取共享程序状态
+        /// </summary>
+        /// <returns></returns>
+        public static AppState GetAppState() => (AppState)System.Windows.Application.Current.Properties["AppState"];
+
+        /// <summary>
+        /// 获取程序设置
+        /// </summary>
+        /// <returns></returns>
+        public static JsonSettings GetJsonSettings() => ((AppState)System.Windows.Application.Current.Properties["AppState"]).userSettings.JsonSettings;
+
+        /// <summary>
+        /// 获取程序数据库对象
+        /// </summary>
+        /// <returns></returns>
+        public static DBService GetDBService() => (DBService)System.Windows.Application.Current.Properties["DBObj"];
     }
 }

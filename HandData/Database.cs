@@ -134,16 +134,13 @@ namespace DataHandler
         /// </summary>
         private void CheckDBFile(string DbFilePath)
         {
+
             if (File.Exists(DbFilePath))
                 return;
+            string? path = Path.GetDirectoryName(DbFilePath);
+            if (path != null && !Directory.Exists(path))
+                Directory.CreateDirectory(path);
 
-            if (DbFilePath.Contains("\\"))
-            {
-                var Paths = DbFilePath.Split('\\');
-                // 检查目录是否存在，如果不存在则创建目录
-                if (!Directory.Exists(Paths[0]))
-                    Directory.CreateDirectory(Paths[0]);
-            }
             File.Create(DbFilePath).Close();
         }
 

@@ -14,23 +14,30 @@ namespace XClipboard.ViewModels.Settings
     {
         private JsonSettings _appState;
 
+        private List<string> copyUrlItems;
         private List<string> defaultOSSItems;
-
         private List<string> show_NumberItems;
-
         private string showView;
 
         public SystemViewModels()
         {
-            BindAppState = ((AppState)System.Windows.Application.Current.Properties["AppState"]).userSettings.JsonSettings;
+            BindAppState = Program_State.GetJsonSettings();
             ShowView = "SystemView";
             Show_NumberItems = new List<string> { "5", "6", "7", "8", "9", "10" };
-            DefaultOSSItems = new List<string> { "又拍云" };
+            DefaultOSSItems = new List<string> { "无", "又拍云" };
+            CopyUrlItems = new List<string> { "Url", "MarkDown", "BBCode", "HTML" };
         }
+
         public JsonSettings BindAppState
         {
             get { return _appState; }
             set { _appState = value; RaisePropertyChanged(); }
+        }
+
+        public List<string> CopyUrlItems
+        {
+            get { return copyUrlItems; }
+            set { copyUrlItems = value; RaisePropertyChanged(); }
         }
 
         public List<string> DefaultOSSItems
@@ -44,11 +51,13 @@ namespace XClipboard.ViewModels.Settings
             get { return show_NumberItems; }
             set { show_NumberItems = value; RaisePropertyChanged(); }
         }
+
         public string ShowView
         {
             get { return showView; }
             set { showView = value; RaisePropertyChanged(); }
         }
+
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
             return true;

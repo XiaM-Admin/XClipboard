@@ -2,8 +2,8 @@
 using Prism.Regions;
 using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
+using XClipboard.Common;
 using XClipboard.Core;
 
 namespace XClipboard.Views
@@ -23,14 +23,11 @@ namespace XClipboard.Views
             // 创建托盘菜单
             // 创建NotifyIcon对象
             _notifyIcon = new();
-            try
-            {
-                _notifyIcon.Icon = new System.Drawing.Icon("Logo.ico"); // 设置托盘图标
-            }
-            catch (Exception)
-            {
-                throw new Exception("托盘菜单初始化失败，请检查软件资源是否齐全，若不全请重新安装！");
-            }
+
+            // 设置托盘图标
+            _notifyIcon.Icon = new System.Drawing.Icon(System.Reflection.Assembly
+                .GetExecutingAssembly()
+                .GetManifestResourceStream("XClipboard.Images.Logo.ico"));
 
             _notifyIcon.Visible = true;
 
@@ -48,6 +45,10 @@ namespace XClipboard.Views
             _regionManager = regionManager;
             //设置窗口左侧抽屉事件
             this.DemoItemsListBox.SelectionChanged += (s, e) => drawrHost.IsLeftDrawerOpen = false;
+
+            // 如果为开机自启动 设置为默认后台运行
+            if (Program_State.GetAppState().IsAutoStart)
+                this.Hide();
         }
 
         private void _notifyIcon_Click(object sender, EventArgs e)
@@ -96,6 +97,7 @@ namespace XClipboard.Views
             this.Topmost = true;
             this.Topmost = false;
         }
+
         private void Window_Closed(object sender, EventArgs e)
         {
             // 关闭窗口时，清理托盘图标

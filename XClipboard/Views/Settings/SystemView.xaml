@@ -60,6 +60,14 @@
                 <StackPanel Orientation="Horizontal">
                     <CheckBox
                         VerticalAlignment="Center"
+                        Content="启用剪贴板服务"
+                        IsChecked="{Binding BindAppState.SystemSettings.IsListen}" />
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        VerticalAlignment="Center"
                         Content="开机自启"
                         IsChecked="{Binding BindAppState.SystemSettings.Startup}" />
                 </StackPanel>
@@ -99,6 +107,26 @@
             Visibility="{Binding ShowView, Converter={StaticResource ViewVisibilityConverter}, ConverterParameter=ClipboardView}">
             <ListBoxItem>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="需监控数据：" />
+                    <CheckBox
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="文本"
+                        IsChecked="{Binding BindAppState.ClipboardSettings.handleData.Text}" />
+                    <CheckBox
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="图片"
+                        IsChecked="{Binding BindAppState.ClipboardSettings.handleData.Image}" />
+                    <CheckBox
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="文件路径"
+                        IsChecked="{Binding BindAppState.ClipboardSettings.handleData.Files}" />
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem>
+                <StackPanel Orientation="Horizontal">
                     <CheckBox
                         VerticalAlignment="Center"
                         Content="去重记录剪贴板数据"
@@ -119,6 +147,19 @@
             x:Name="MyImageurlView"
             materialDesign:ListBoxItemAssist.ShowSelection="False"
             Visibility="{Binding ShowView, Converter={StaticResource ViewVisibilityConverter}, ConverterParameter=ImageurlView}">
+            <ListBoxItem Margin="4,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center"
+                        Text="点击复制后链接格式：" />
+                    <ComboBox
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding CopyUrlItems}"
+                        SelectedItem="{Binding BindAppState.ImageurlSettings.CopyUrlMode}" />
+                </StackPanel>
+            </ListBoxItem>
+
             <ListBoxItem Margin="4,0,0,0">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock

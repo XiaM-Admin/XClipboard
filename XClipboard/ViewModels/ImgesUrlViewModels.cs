@@ -52,6 +52,7 @@ namespace XClipboard.ViewModels
             ComboBoxItems = new() { "所有", "分类", "名字", "备注" };
             DialogService = dialogService;
         }
+
         /// <summary>
         /// 多选框文本
         /// </summary>
@@ -60,6 +61,7 @@ namespace XClipboard.ViewModels
             get { return comboBox_Text; }
             set { comboBox_Text = value; RaisePropertyChanged(); }
         }
+
         /// <summary>
         /// 多选框集合
         /// </summary>
@@ -78,6 +80,7 @@ namespace XClipboard.ViewModels
         /// 查询图库数据
         /// </summary>
         public DelegateCommand Find { private set; get; }
+
         /// <summary>
         /// 搜索框文本
         /// </summary>
@@ -86,6 +89,7 @@ namespace XClipboard.ViewModels
             get { return find_Text; }
             set { find_Text = value; RaisePropertyChanged(); }
         }
+
         /// <summary>
         /// 图片类型集合
         /// </summary>
@@ -132,8 +136,6 @@ namespace XClipboard.ViewModels
         /// <param name="navigationContext"></param>
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
-            //if (navigationContext.Parameters.ContainsKey("UpdataView"))
-            //{ }
             UpdataView();
         }
 
@@ -143,7 +145,18 @@ namespace XClipboard.ViewModels
         /// <param name="obj"></param>
         private async void copy_fun(ShowImageItem obj)
         {
-            System.Windows.Forms.Clipboard.SetText(obj.Url);
+            string copymode = Program_State.GetJsonSettings().ImageurlSettings.CopyUrlMode;
+
+            string url = obj.Url.Replace(" ", "%20");
+            if (copymode is "" or "Url")
+                System.Windows.Forms.Clipboard.SetText(url);
+            else if (copymode is "MarkDown")
+                System.Windows.Forms.Clipboard.SetText($"![{obj.Name}]({url})");
+            else if (copymode is "BBCode")
+                System.Windows.Forms.Clipboard.SetText($"[img]{url}[/img]");
+            else if (copymode is "HTML")
+                System.Windows.Forms.Clipboard.SetText($"<img src=\"{url}\" alt=\"{obj.Name}\">");
+
             ShowTip = true;
             await Task.Delay(1500);
             ShowTip = false;
@@ -172,6 +185,7 @@ namespace XClipboard.ViewModels
             };
             UpdataView(keyValues[ComboBox_Text], Find_Text);
         }
+
         /// <summary>
         /// 更多设置
         /// </summary>

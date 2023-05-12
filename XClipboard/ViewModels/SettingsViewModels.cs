@@ -27,8 +27,6 @@ namespace XClipboard.ViewModels
             {
                 {"View","SystemView" }
             };
-            //载入默认系统设置视图 RegisterViewWithRegion
-            //regionManager.RequestNavigate(RegionNames.SettingsRegion, "SystemView");
         }
 
         /// <summary>
@@ -67,7 +65,7 @@ namespace XClipboard.ViewModels
         private async void SaveAsync()
         {
             SampleMessageDialog sampleMessageDialog;
-            var app = (AppState)System.Windows.Application.Current.Properties["AppState"];
+            var app = Program_State.GetAppState();
             try
             {
                 var ret = await app.userSettings.SaveAsync();

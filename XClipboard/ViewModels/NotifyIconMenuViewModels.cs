@@ -36,7 +36,7 @@ namespace XClipboard.ViewModels
             if (SelectedMenuItem is null)
                 return;
             var item = SelectedMenuItem as NotifyIconMenuItems;
-            AppState app = (AppState)System.Windows.Application.Current.Properties["AppState"];
+            AppState app = Program_State.GetAppState();
 
             switch (item.Text)
             {

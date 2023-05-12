@@ -6,6 +6,8 @@ using System.Windows;
 using XClipboard.Common.Models;
 using XClipboard.Core;
 using Microsoft.Win32;
+using XClipboard.ClipboardHistory;
+using System.Net.NetworkInformation;
 
 namespace XClipboard.Common
 {
@@ -23,11 +25,18 @@ namespace XClipboard.Common
             //    ClipboardSettings = new()
             //    {
             //        duplicate_data = true,
-            //        image_save_path = "Data\\Images\\"
+            //        image_save_path = "Data\\Images\\",
+            //        handleData = new()
+            //        {
+            //            Text = true,
+            //            Image = true,
+            //            Files = true
+            //        }
             //    },
             //    ImageurlSettings = new()
             //    {
-            //        DefaultOSS = "又拍云",
+            //        CopyUrlMode = "Url",
+            //        DefaultOSS = "无",
             //        UpyunSettings = new()
             //        {
             //            Bucket = "Bucket",
@@ -39,6 +48,7 @@ namespace XClipboard.Common
             //    },
             //    SystemSettings = new()
             //    {
+            //        IsListen = true,
             //        Show_Number = "5",
             //        Startup = false,
             //        Upload_Alert = false,
@@ -46,7 +56,7 @@ namespace XClipboard.Common
             //    }
             //};
             //var Value = JsonConvert.SerializeObject(JsonSettings);
-            var dbobj = (DBService)Application.Current.Properties["DBObj"];
+            var dbobj = Program_State.GetDBService();
             JsonSteeingsModels jsonSteeingsModels = new();
             if (!dbobj.CheckTable(DBService_Core.UserSettingName, jsonSteeingsModels)) throw new Exception("UserSettings Init Error.1");
             JsonSteeingsModels task = dbobj.GetDataByID<JsonSteeingsModels>(dbobj.GetDataNumber(DBService_Core.UserSettingName).Result, DBService_Core.UserSettingName).Result;
@@ -72,14 +82,20 @@ namespace XClipboard.Common
         public async Task<int> SaveAsync()
         {
             //数据检查
-            var dbobj = (DBService)Application.Current.Properties["DBObj"];
+            var dbobj = Program_State.GetDBService();
             JsonSteeingsModels task = dbobj.GetDataByID<JsonSteeingsModels>(dbobj.GetDataNumber(DBService_Core.UserSettingName).Result, DBService_Core.UserSettingName).Result;
             JsonSettings JsonSettings_New = JsonConvert.DeserializeObject<JsonSettings>(task.Json);
             if (JsonSettings_New.Equals(JsonSettings))
                 throw new Exception("设置未被更改.");
 
+            //处理数据
             await checkSetAsync(JsonSettings);
             SetAutoStart(JsonSettings.SystemSettings.Startup);
+
+            if (!JsonSettings.SystemSettings.IsListen)
+                Program_State.GetAppState().IsClipboardServiceRunning.Clipboard = false;
+            else
+                Program_State.GetAppState().IsClipboardServiceRunning.Clipboard = true;
 
             var Value = JsonConvert.SerializeObject(JsonSettings);
             steeingsModels = new()
@@ -100,7 +116,7 @@ namespace XClipboard.Common
             //利用注册表实现开机应用自启动
             RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             if (isStart)
-                rk.SetValue("XClipboard", System.Windows.Forms.Application.ExecutablePath);
+                rk.SetValue("XClipboard", System.Windows.Forms.Application.ExecutablePath + " --autostart");
             else
                 rk.DeleteValue("XClipboard", false);
         }
@@ -125,6 +141,7 @@ namespace XClipboard.Common
 
             return true;
         }
+
 
     }
 }
