@@ -42,7 +42,6 @@ namespace XClipboard.ViewModels
             {
                 case "   关闭":
                     System.Windows.Application.Current.Shutdown();
-                    Show.Invoke();
                     break;
                 case "   首页":
                     app.regionManager.RequestNavigate(RegionNames.ContentRegion, "HomeView");

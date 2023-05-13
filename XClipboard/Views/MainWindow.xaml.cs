@@ -98,12 +98,6 @@ namespace XClipboard.Views
             this.Topmost = false;
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            // 关闭窗口时，清理托盘图标
-            _notifyIcon.Dispose();
-            _notifyIcon = null;
-        }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
@@ -111,6 +105,29 @@ namespace XClipboard.Views
             if (WindowState == WindowState.Minimized)
             {
                 this.Hide();
+            }
+        }
+
+        private void Window_Closed(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (WindowState != WindowState.Minimized)
+            {
+                // 弹出提示是否关闭
+                if (System.Windows.MessageBox.Show("是否关闭程序？\r\n取消后程序将后台运行.", "真的要走吗？", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                {
+                    // 关闭窗口时，清理托盘图标
+                    _notifyIcon.Dispose();
+                    _notifyIcon = null;
+                    // 关闭程序
+                    System.Windows.Application.Current.Shutdown();
+                }
+                else
+                {
+                    WindowState = WindowState.Minimized;
+                    this.Hide();
+                    // 取消关闭操作
+                    e.Cancel = true;
+                }
             }
         }
     }
