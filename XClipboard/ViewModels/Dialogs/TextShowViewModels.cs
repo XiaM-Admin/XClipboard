@@ -175,6 +175,9 @@ namespace XClipboard.ViewModels.Dialogs
         public async void OnDialogOpened(IDialogParameters parameters)
         {
             ClipboardItem = parameters.ContainsKey("content") ? parameters.GetValue<ClipboardItems>("content") : default;
+            string path = "";
+            if (Program_State.GetAppState().IsAutoStart)
+                path = System.AppDomain.CurrentDomain.BaseDirectory;
 
             if (ClipboardItem?.contentType == "Image")
             {
@@ -187,19 +190,20 @@ namespace XClipboard.ViewModels.Dialogs
 
                     image.BeginInit();
                     image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.UriSource = new Uri(Imageurldb.Url);
+
+                    image.UriSource = new Uri(path + Imageurldb.Url);
                     image.EndInit();
                     ShowImage = image;
                 }
                 catch (Exception)
                 {
-                    if (!File.Exists(ClipboardItem.content))
+                    if (!File.Exists(path + ClipboardItem.content))
                     {
                         ShowTipText = "图片因为某些原因，文件已不存在，无法显示！";
                         ShowTipBool = true;
                         return;
                     }
-                    using MemoryStream stream = new(File.ReadAllBytes(ClipboardItem.content));
+                    using MemoryStream stream = new(File.ReadAllBytes(path + ClipboardItem.content));
                     image.BeginInit();
                     image.CacheOption = BitmapCacheOption.OnLoad;
                     image.StreamSource = stream;
