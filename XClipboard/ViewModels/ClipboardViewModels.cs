@@ -72,10 +72,11 @@ namespace XClipboard.ViewModels
             MouseDoubleClick = new(mousedoubleclick);
             MouseRightButtonDown = new(mouseRightButtonDown);
             Refresh = new(refreshFun);
+            SelectionChanged = new DelegateCommand(selectionChanged);
             Find = new(find);
             ComboBoxItems = new() { "内容", "分类", "来自" };
             ContentTypeItems = new() { "文本", "图片", "文件" };
-
+            ClassItems = new();
             this.dialogService = dialogService;
         }
 
@@ -85,6 +86,51 @@ namespace XClipboard.ViewModels
             set { clipboards = value; RaisePropertyChanged(); }
         }
 
+        //============================
+        private List<string> classItems;
+
+        public List<string> ClassItems
+        {
+            get { return classItems; }
+            set { classItems = value; RaisePropertyChanged(); }
+        }
+
+        private string classSelectedItem;
+
+        public string ClassSelectedItem
+        {
+            get { return classSelectedItem; }
+            set { classSelectedItem = value; RaisePropertyChanged(); }
+        }
+
+        private string classSelectedValue;
+
+        public string ClassSelectedValue
+        {
+            get { return classSelectedValue; }
+            set { classSelectedValue = value; RaisePropertyChanged(); }
+        }
+
+        public DelegateCommand SelectionChanged { get; private set; }
+
+        private void selectionChanged()
+        {
+            reFresh("className", ClassSelectedItem);
+        }
+
+        private async void AddClassItems()
+        {
+            var db = Program_State.GetDBService();
+            List<string> strings = await db.GetDistinctList("className");
+            ClassItems = new();
+            strings.ForEach(t =>
+            {
+                if (t != string.Empty)
+                    ClassItems.Add(t);
+            });
+        }
+
+        //==========================
         public string ComboBox_Text
         {
             get { return comboBox_Text; }
@@ -169,6 +215,7 @@ namespace XClipboard.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             reFresh();
+            AddClassItems();
         }
 
         /// <summary>
@@ -272,12 +319,29 @@ namespace XClipboard.ViewModels
             });
         }
 
+
+        private async void reFresh(string by, string content)
+        {
+            Clipboards.Clear();
+            var db = Program_State.GetDBService();
+            List<Clipboardb_Models> list_Find = await db.GetDtaByParams<Clipboardb_Models>(by, content);
+            list_Find?.Reverse();
+            list_Find?.ForEach(t =>
+            {
+                Clipboards.Add(new(t));
+            });
+            return;
+
+        }
+
         /// <summary>
         /// 刷新事件
         /// </summary>
         private void refreshFun()
         {
             reFresh();
+            AddClassItems();
+            ClassSelectedValue = "Any";
         }
     }
 }

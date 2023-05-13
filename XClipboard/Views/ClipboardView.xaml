@@ -67,11 +67,28 @@
             <Button
                 Width="50"
                 Height="30"
-                Margin="0,0,15,0"
+                Margin="5,0,15,0"
                 Command="{Binding Refresh}"
                 DockPanel.Dock="Right">
                 <materialDesign:PackIcon Kind="Refresh" />
             </Button>
+            <ComboBox
+                Margin="5,0,0,0"
+                materialDesign:HintAssist.Hint="Any"
+                DockPanel.Dock="Right"
+                ItemsSource="{Binding ClassItems}"
+                SelectedItem="{Binding ClassSelectedItem}"
+                SelectedValue="{Binding ClassSelectedValue}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectionChanged}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
+            <TextBlock
+                VerticalAlignment="Center"
+                DockPanel.Dock="Right"
+                Text="分类快切：" />
         </DockPanel>
         <DataGrid
             Grid.Row="1"

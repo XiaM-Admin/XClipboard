@@ -50,8 +50,54 @@ namespace XClipboard.ViewModels
             Refresh = new DelegateCommand(refresh);
             Find = new DelegateCommand(find);
             ComboBoxItems = new() { "所有", "分类", "名字", "备注" };
+            SelectionChanged = new DelegateCommand(selectionChanged);
             DialogService = dialogService;
         }
+        //============================
+        private List<string> classItems;
+
+        public List<string> ClassItems
+        {
+            get { return classItems; }
+            set { classItems = value; RaisePropertyChanged(); }
+        }
+
+        private string classSelectedItem;
+
+        public string ClassSelectedItem
+        {
+            get { return classSelectedItem; }
+            set { classSelectedItem = value; RaisePropertyChanged(); }
+        }
+
+        private string classSelectedValue;
+
+        public string ClassSelectedValue
+        {
+            get { return classSelectedValue; }
+            set { classSelectedValue = value; RaisePropertyChanged(); }
+        }
+
+        public DelegateCommand SelectionChanged { get; private set; }
+
+        private void selectionChanged()
+        {
+            UpdataView("className", ClassSelectedItem);
+        }
+
+        private async void AddClassItems()
+        {
+            var db = Program_State.GetDBService();
+            List<string> strings = await db.GetDistinctList("className", DBService_Core.ImgaeurlName);
+            ClassItems = new();
+            strings.ForEach(t =>
+            {
+                if (t != string.Empty)
+                    ClassItems.Add(t);
+            });
+        }
+
+        //==========================
 
         /// <summary>
         /// 多选框文本
@@ -137,6 +183,7 @@ namespace XClipboard.ViewModels
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             UpdataView();
+            AddClassItems();
         }
 
         /// <summary>
@@ -213,6 +260,8 @@ namespace XClipboard.ViewModels
         private void refresh()
         {
             UpdataView();
+            AddClassItems();
+            ClassSelectedValue = "Any";
         }
 
         /// <summary>

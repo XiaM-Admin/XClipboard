@@ -45,7 +45,7 @@
                 Style="{StaticResource MaterialDesignActionToggleButton}"
                 ToolTip="MaterialDesignActionLightToggleButton" />
             <TextBlock
-                Margin="10,0,0,0"
+                Margin="10,0,10,0"
                 VerticalAlignment="Center"
                 Text="剪贴板监控状态： " />
             <TextBlock
