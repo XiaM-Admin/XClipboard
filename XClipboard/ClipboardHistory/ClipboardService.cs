@@ -215,20 +215,8 @@ namespace XClipboard.ClipboardHistory
             {
                 _content = await Handle_Content(e);
             }
-            catch (Exception error)
+            catch (Exception)
             {
-                if (error.Message is not null)
-                {
-                    NotificationSets showerror = new()
-                    {
-                        Title = "错误",
-                        Content = $"在处理剪贴板数据时发生错误\r\n{error.Message}",
-                        ShowTime = 5
-                    };
-                    //提示用户上传成功
-                    NotificationWindow notification_ok = new(new(showerror));
-                    notification_ok.Show();
-                }
                 return;
             }
             string classname = AnalysisText(_content);
